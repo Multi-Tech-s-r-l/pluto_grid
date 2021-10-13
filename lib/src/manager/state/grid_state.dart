@@ -191,11 +191,14 @@ mixin GridState implements IPlutoGridState {
     if (_mode.isSelect == true && _onSelected != null) {
       _onSelected!(
           PlutoGridOnSelectedEvent(row: currentRow, cell: currentCell));
+    } else {
+      //Milos:
+      handleOnTap();
     }
   }
 //Milos:
   void handleOnTap() {
-    if (_mode.isSelect == true && _onTap != null) {
+    if (_onTap != null) {
       _onTap!(
           PlutoGridOnTapEvent(row: currentRow, cell: currentCell));
     }

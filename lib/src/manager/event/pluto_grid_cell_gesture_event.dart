@@ -168,6 +168,8 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
     if (stateManager.isCurrentCell(cell)) {
       stateManager.handleOnSelected();
     } else {
+      //Milos:
+      stateManager.handleOnTap();
       stateManager.setCurrentCell(cell, rowIdx);
     }
   }
