@@ -13,6 +13,12 @@ typedef PlutoOnChangedEventCallback = void Function(
 typedef PlutoOnSelectedEventCallback = void Function(
     PlutoGridOnSelectedEvent event);
 
+
+//Milos
+typedef PlutoOnTapEventCallback = void Function(
+    PlutoGridOnTapEvent event);
+
+
 typedef PlutoOnRowCheckedEventCallback = void Function(
     PlutoGridOnRowCheckedEvent event);
 
@@ -38,6 +44,8 @@ class PlutoGrid extends StatefulWidget {
   final PlutoOnChangedEventCallback? onChanged;
 
   final PlutoOnSelectedEventCallback? onSelected;
+
+  final PlutoOnTapEventCallback? onTap;
 
   final PlutoOnRowCheckedEventCallback? onRowChecked;
 
@@ -73,6 +81,8 @@ class PlutoGrid extends StatefulWidget {
     this.createFooter,
     this.configuration,
     this.mode = PlutoGridMode.normal,
+    //Milos
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -166,6 +176,8 @@ class _PlutoGridState extends State<PlutoGrid> {
       onRowCheckedEventCallback: widget.onRowChecked,
       onRowDoubleTapEventCallback: widget.onRowDoubleTap,
       onRowSecondaryTapEventCallback: widget.onRowSecondaryTap,
+      //Milos
+      onTapEventCallback: widget.onTap,
       createHeader: widget.createHeader,
       createFooter: widget.createFooter,
       configuration: widget.configuration,
@@ -534,6 +546,17 @@ class PlutoGridOnSelectedEvent {
   });
 }
 
+
+//Milos:
+class PlutoGridOnTapEvent {
+  final PlutoRow? row;
+  final PlutoCell? cell;
+
+  PlutoGridOnTapEvent({
+    this.row,
+    this.cell,
+  });
+}
 abstract class PlutoGridOnRowCheckedEvent {
   bool get isAll => runtimeType == PlutoGridOnRowCheckedAllEvent;
   bool get isRow => runtimeType == PlutoGridOnRowCheckedOneEvent;

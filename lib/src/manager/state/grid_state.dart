@@ -56,6 +56,10 @@ abstract class IGridState {
 
   /// Event occurred after selecting Row in Select mode.
   void handleOnSelected();
+
+  //Milos:
+  /// Event occurred after selecting Row.
+  void handleOnTap();
 }
 
 mixin GridState implements IPlutoGridState {
@@ -86,6 +90,13 @@ mixin GridState implements IPlutoGridState {
   PlutoOnSelectedEventCallback? get onSelected => _onSelected;
 
   PlutoOnSelectedEventCallback? _onSelected;
+
+  //Milos: ******************************************
+
+  PlutoOnTapEventCallback? get onTap => _onTap;
+
+  PlutoOnTapEventCallback? _onTap;
+  //**************************************************
 
   PlutoOnRowCheckedEventCallback? get onRowChecked => _onRowChecked;
 
@@ -143,6 +154,11 @@ mixin GridState implements IPlutoGridState {
     _onRowSecondaryTap = onRowSecondaryTap;
   }
 
+//Milos:
+  void setOnTap(PlutoOnTapEventCallback? onTap) {
+    _onTap = onTap;
+  }
+
   void setCreateHeader(CreateHeaderCallBack? createHeader) {
     _createHeader = createHeader;
   }
@@ -175,6 +191,13 @@ mixin GridState implements IPlutoGridState {
     if (_mode.isSelect == true && _onSelected != null) {
       _onSelected!(
           PlutoGridOnSelectedEvent(row: currentRow, cell: currentCell));
+    }
+  }
+//Milos:
+  void handleOnTap() {
+    if (_mode.isSelect == true && _onTap != null) {
+      _onTap!(
+          PlutoGridOnTapEvent(row: currentRow, cell: currentCell));
     }
   }
 }

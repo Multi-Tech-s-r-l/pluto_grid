@@ -372,9 +372,12 @@ mixin SelectingState implements IPlutoGridState {
   }
 
   void toggleSelectingRow(int? rowIdx, {notify = true}) {
+    //Milos: modificato in modo da permettere la selezione della riga anche se la selezione è di tipo diverso da Row
+
     if (!_selectingMode.isRow) {
-      return;
+    //  return;
     }
+
 
     if (rowIdx == null || rowIdx < 0 || rowIdx > refRows!.length - 1) {
       return;
@@ -400,6 +403,14 @@ mixin SelectingState implements IPlutoGridState {
     return !_selectingMode.isNone &&
         (keyPressed.shift || keyPressed.ctrl) &&
         currentCell != null;
+
+/*
+  //Milos: modificato in modo da ignorare lo stato dei pulsanti
+    return !_selectingMode.isNone &&
+        currentCell != null;
+*/
+
+
   }
 
   bool isSelectedRow(Key? rowKey) {

@@ -64,6 +64,9 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
       stateManager.setEditing(true);
     } else {
       stateManager.setCurrentCell(cell, rowIdx);
+
+      //Milos: aggiunta selezione sempre e comunque
+      _selectMode(stateManager);
     }
   }
 
@@ -113,6 +116,29 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
     return stateManager.isCurrentCell(cell);
   }
 
+  /*void _selecting(PlutoGridStateManager stateManager) {
+    if (stateManager.keyPressed.shift) {
+      final int? columnIdx = stateManager.columnIndex(column);
+
+      stateManager.setCurrentSelectingPosition(
+        cellPosition: PlutoGridCellPosition(
+          columnIdx: columnIdx,
+          rowIdx: rowIdx,
+        ),
+      );
+    } else if (stateManager.keyPressed.ctrl) {
+      //Milos: workaround per issue #12
+      //Hold down the control key and change to another window, release the control key and return to the grid, the control key is pressed. #12
+
+    stateManager.keyPressed.ctrl=false;
+      stateManager.toggleSelectingRow(rowIdx);
+    }
+
+    //Milos: modificato per permettere la selezione anche senza pulsanti
+    stateManager.toggleSelectingRow(rowIdx);
+  }*/
+
+  //Milos: modificata selecting per gestire la selezione più classico
   void _selecting(PlutoGridStateManager stateManager) {
     if (stateManager.keyPressed.shift) {
       final int? columnIdx = stateManager.columnIndex(column);
@@ -124,8 +150,18 @@ class PlutoGridCellGestureEvent extends PlutoGridEvent {
         ),
       );
     } else if (stateManager.keyPressed.ctrl) {
+      //Milos: workaround per issue #12
+      //Hold down the control key and change to another window, release the control key and return to the grid, the control key is pressed. #12
+
+      stateManager.keyPressed.ctrl=false;
+      stateManager.toggleSelectingRow(rowIdx);
+
+    } else {
+      //Milos: modificato per permettere la selezione anche senza pulsanti
       stateManager.toggleSelectingRow(rowIdx);
     }
+
+
   }
 
   void _selectMode(PlutoGridStateManager stateManager) {
