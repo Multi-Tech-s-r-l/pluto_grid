@@ -439,7 +439,8 @@ class PlutoColumnTypeUtcDate
 
   bool isValid(dynamic value) {
     final parsedDate = DateTime.tryParse('${value}Z');
-
+    print("ParsedDate: " + parsedDate!.toString());
+    print("ParsedDate: " + parsedDate.toIso8601String());
     if (parsedDate == null) {
       return false;
     }
