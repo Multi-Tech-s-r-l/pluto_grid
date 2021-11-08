@@ -82,7 +82,34 @@ abstract class PlutoColumnType {
       applyFormatOnInit: applyFormatOnInit,
     );
   }
-
+//#region PlutoColumnType.utcDate
+  /// Set as a date column.
+  ///
+  /// [startDate] Range start date (If there is no value, Can select the date without limit)
+  ///
+  /// [endDate] Range end date
+  ///
+  /// [format] 'yyyy-MM-dd' (2020-01-01)
+  ///
+  /// [applyFormatOnInit] When the editor loads, it resets the value to [format].
+  factory PlutoColumnType.utcDate({
+    bool readOnly = false,
+    dynamic defaultValue = '',
+    DateTime? startDate,
+    DateTime? endDate,
+    String format = 'yyyy-MM-dd',
+    bool applyFormatOnInit = true,
+  }) {
+    return PlutoColumnTypeUtcDate(
+      readOnly: readOnly,
+      defaultValue: defaultValue,
+      startDate: startDate,
+      endDate: endDate,
+      format: format,
+      applyFormatOnInit: applyFormatOnInit,
+    );
+  }
+  //#endregion
   factory PlutoColumnType.time({
     bool readOnly = false,
     dynamic defaultValue = '00:00',
@@ -385,6 +412,78 @@ class PlutoColumnTypeTime implements PlutoColumnType {
     return v;
   }
 }
+
+//#region Milos - PlutoColumnTypeUtcDate
+class PlutoColumnTypeUtcDate
+    implements PlutoColumnType, _PlutoColumnTypeHasFormat {
+  bool? readOnly;
+
+  dynamic defaultValue;
+
+  DateTime? startDate;
+
+  DateTime? endDate;
+
+  String? format;
+
+  bool? applyFormatOnInit;
+
+  PlutoColumnTypeUtcDate({
+    this.readOnly,
+    this.defaultValue,
+    this.startDate,
+    this.endDate,
+    this.format,
+    this.applyFormatOnInit,
+  });
+
+  bool isValid(dynamic value) {
+    final parsedDate = DateTime.tryParse('${value}Z');
+
+    if (parsedDate == null) {
+      return false;
+    }
+
+    if (startDate != null && parsedDate.isBefore(startDate!)) {
+      return false;
+    }
+
+    if (endDate != null && parsedDate.isAfter(endDate!)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  int compare(dynamic a, dynamic b) {
+    return compareWithNull(a, b, () => a.toString().compareTo(b.toString()));
+  }
+
+  dynamic makeCompareValue(dynamic v) {
+    final dateFormat = intl.DateFormat(format);
+
+    DateTime? dateFormatValue;
+
+    try {
+      dateFormatValue = dateFormat.parse(v.toString());
+    } catch (e) {
+      dateFormatValue = null;
+    }
+
+    return dateFormatValue;
+  }
+
+  String applyFormat(dynamic value) {
+    final parseValue = DateTime.tryParse(value.toString());
+
+    if (parseValue == null) {
+      return '';
+    }
+
+    return intl.DateFormat(format).format(DateTime.parse(value.toString()));
+  }
+}
+//#endregion
 
 abstract class _PlutoColumnTypeHasFormat {
   String? format;
