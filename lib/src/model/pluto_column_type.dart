@@ -474,7 +474,7 @@ class PlutoColumnTypeUtcDate
   }
 
   String applyFormat(dynamic value) {
-    final parseValue = DateTime.tryParse(value.toString());
+    final parseValue = DateTime.tryParse('${value}Z');
 
     if (parseValue == null) {
       return '';
