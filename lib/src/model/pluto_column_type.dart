@@ -348,7 +348,7 @@ class PlutoColumnTypeDate
     DateTime? dateFormatValue;
 
     try {
-      dateFormatValue = dateFormat.parse(v.toString(), isUtc ?? false);
+      dateFormatValue = dateFormat.parse(v.toString(), isUtc ?? false).toLocal();
     } catch (e) {
       dateFormatValue = null;
     }
@@ -362,7 +362,11 @@ class PlutoColumnTypeDate
     if (parseValue == null) {
       return '';
     }
-
+      if (isUtc!=null && isUtc!){
+        return intl.DateFormat(format).format(DateTime.parse('${value}Z').toLocal());
+      } else {
+        return intl.DateFormat(format).format(DateTime.parse(value.toString()));
+      }
     return intl.DateFormat(format).format(DateTime.parse((isUtc==null || isUtc==false) ? value.toString() : '${value}Z'));
   }
 }

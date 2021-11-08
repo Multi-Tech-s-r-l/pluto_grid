@@ -65,7 +65,7 @@ class DummyData {
             return DateTime.now()
                 .add(Duration(
                     days: faker.randomGenerator.integer(365, min: -365)))
-                .toString();
+                .toIso8601String();
           else if (element.type.isTime)
             return '00:00';
           else
