@@ -35,7 +35,7 @@ class _ColumnFilteringScreenState extends State<ColumnFilteringScreen> {
       PlutoColumn(
         title: 'Date',
         field: 'date',
-        type: PlutoColumnType.date(),
+        type: PlutoColumnType.date(format: 'dd/MM/yyyy HH:mm:ss', isUtc: true),
       ),
       PlutoColumn(
         title: 'Disable',
